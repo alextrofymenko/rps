@@ -27,22 +27,34 @@ class Hand:
 class Rock (Hand): 
 	def __init__(self):
 		self.Values = [ "r", "rock" ]
-		self.Beats = [ Scissors ]
-		self.LosesTo = [ Paper ]
+		self.Beats = [ Scissors, Lizard ]
+		self.LosesTo = [ Paper, Spock ]
 
 class Paper (Hand): 
 	def __init__(self):
 		self.Values = [ "p", "paper" ]
-		self.Beats = [ Rock ]
-		self.LosesTo = [ Scissors ]
+		self.Beats = [ Rock, Spock ]
+		self.LosesTo = [ Scissors, Lizard ]
 
 class Scissors (Hand): 
 	def __init__(self):
 		self.Values = [ "s", "scissors" ]
-		self.Beats = [ Paper ]
-		self.LosesTo = [ Rock ]
+		self.Beats = [ Paper, Lizard ]
+		self.LosesTo = [ Rock, Spock ]
 
-hands = [ Rock(), Paper(), Scissors() ]
+class Lizard (Hand):
+	def __init__(self):
+		self.Values = [ "l", "lizard" ]
+		self.Beats = [ Paper, Spock ]
+		self.LosesTo = [ Rock, Scissors ]
+
+class Spock (Hand):
+	def __init__(self):
+		self.Values = [ "sp", "spock" ]
+		self.Beats = [ Rock, Scissors ]
+		self.LosesTo = [ Paper, Lizard ]
+
+hands = [ Rock(), Paper(), Scissors(), Lizard(), Spock() ]
 
 player1 = Player("Player 1")
 player2 = Player("Player 2")
@@ -67,14 +79,6 @@ def GetInputFor(player):
 		return False
 
 	return True
-
-def Beats(player1, player2):
-	if (isinstance(player1.Hand, Rock) and isinstance(player2.Hand, Scissors) or
-	isinstance(player1.Hand, Paper) and isinstance(player2.Hand, Rock) or
-	isinstance(player1.Hand, Scissors) and isinstance(player2.Hand, Paper)):
-		return True
-	else:
-		return False
 
 def RPS():
 	while not GetInputFor(player1):
