@@ -5,29 +5,62 @@ class Player:
 	def __init__(self, name):
 		self.Name = name
 
-class Rock: pass
-class Paper: pass
-class Scissors: pass
+class Hand: 
+	Values = None
+	Beats = None
+	LosesTo = None
 
-hands = {
-	"r": Rock(),
-	"rock": Rock(),
+	def __lt__(self, other):
+		for hand in self.LosesTo:
+			if (isinstance(other, hand)):
+				return True
 
-	"p": Paper(),
-	"paper": Paper(),
+		return False
 
-	"s": Scissors(),
-	"scissors": Scissors()
-}
+	def __gt__(self, other):
+		for hand in self.Beats:
+			if (isinstance(other, hand)):
+				return True
+
+		return False
+
+class Rock (Hand): 
+	def __init__(self):
+		self.Values = [ "r", "rock" ]
+		self.Beats = [ Scissors ]
+		self.LosesTo = [ Paper ]
+
+class Paper (Hand): 
+	def __init__(self):
+		self.Values = [ "p", "paper" ]
+		self.Beats = [ Rock ]
+		self.LosesTo = [ Scissors ]
+
+class Scissors (Hand): 
+	def __init__(self):
+		self.Values = [ "s", "scissors" ]
+		self.Beats = [ Paper ]
+		self.LosesTo = [ Rock ]
+
+hands = [ Rock(), Paper(), Scissors() ]
 
 player1 = Player("Player 1")
 player2 = Player("Player 2")
+
+def GetPlayerHand(str):
+	for hand in hands:
+		try:
+			hand.Values.index(str)
+			return hand
+		except ValueError: pass
+
+	return False
 
 def GetInputFor(player):
 	input = raw_input(str(player.Name) + "?") # get input
 	input = input.lower().strip() # sanitize input
 
-	player.Hand = hands.get(input, False)
+	player.Hand = GetPlayerHand(input)
 
 	if (not player.Hand):
 		print "Input invalid, please try again"
@@ -50,9 +83,9 @@ def RPS():
 	while not GetInputFor(player2):
 		pass
 
-	if (Beats(player1, player2)):
+	if (player1.Hand > player2.Hand):
 		print str(player1.Name) + " is the winner!"
-	elif (Beats(player2, player1)):
+	elif (player1.Hand < player2.Hand):
 		print str(player2.Name) + " is the winner!"
 	else:
 		print "It's a draw, let's play again!"
