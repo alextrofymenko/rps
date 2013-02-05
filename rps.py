@@ -27,7 +27,10 @@ class Hand:
 class Rock (Hand): 
 	def __init__(self):
 		self.Values = [ "r", "rock" ]
-		self.Beats = [ Scissors, Lizard ]
+		self.Beats = { 
+			Scissors: "Rock dulls scissors...", 
+			Lizard: "Rock crushes lizard"
+		}
 		self.LosesTo = [ Paper, Spock ]
 
 class Paper (Hand): 
